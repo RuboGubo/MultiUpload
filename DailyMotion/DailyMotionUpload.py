@@ -7,6 +7,7 @@ channel = 'yeah987654'
 
 def get_access_token():
     pass #still need to do this
+    #https://developer.dailymotion.com/api/#retrieving-oauth-tokens
 def upload_video(access_token):
     # https://developer.dailymotion.com/guides/upload/#:~:text=2.-,Get%20an%20upload%20URL,at%20%2Ffile%2Fupload%20
     headers = {'Authorization': "Bearer {}".format(access_token)}
