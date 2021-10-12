@@ -12,7 +12,6 @@ Description: str = 'test'#input(': ')
 Tags: str = 'test'#input('please enter tag (only 1 tag currently supported): ') # FIIIIIIIIIIXXXXXXXXXXXXXXXXXXXX MAKE IT MULTITAGED
 
 f = open(r'SignIn\UserPreferances.json')
-
 data = json.load(f)
 Platforms = data['Platforms']
 
