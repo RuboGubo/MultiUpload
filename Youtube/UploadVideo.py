@@ -5,11 +5,11 @@ from googleapiclient.http import MediaFileUpload # will convert to class later
 CLIENT_SECRET_FILE = 'Youtube\client_secret.json'
 API_NAME = 'youtube'
 API_VERSION = 'V3'
-SCOPES = ['https://www.googleapis.com/auth/youtube.upload']
+SCOPES = ['https://www.googleapis.com/auth/youtube.upload', 'https://www.googleapis.com/auth/youtube']
 
 service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
 
-def UploadYoutubeVideo(title: str, description: Optional[str], tags: Optional[list[str]]):
+def UploadYoutubeVideo(title: str, description: Optional[str], tags: Optional[list[str]], VideoDir: str, ThumbnailDir: str = 'DefaultThumb.png'):
     
     RequestsBody = {
         'snippet':{
@@ -24,7 +24,7 @@ def UploadYoutubeVideo(title: str, description: Optional[str], tags: Optional[li
         'notifySubscribers': False
     }
     
-    MediaFile = MediaFileUpload('0001-0240.mkv')
+    MediaFile = MediaFileUpload(VideoDir)
     
     ResponceUpload = service.videos().insert(
         part='snippet, status',
@@ -33,6 +33,6 @@ def UploadYoutubeVideo(title: str, description: Optional[str], tags: Optional[li
     ).execute()
 
     service.thumbnails().set(
-        videoId = ResponceUpload.get('id'),
-        media_body=MediaFileUpload('thumnail.png')
+        videoId = 'MKwF8T8yaiA',#ResponceUpload.get('id'),
+        media_body=MediaFileUpload(ThumbnailDir)
     ).execute()
