@@ -10,10 +10,10 @@ data = { # does not currently work
 'title': title,
 'channel': channel,
 'tags': 'testtag1234',
-'is_created_for_kids': 'false'
+'is_created_for_kids': 'true'
 }
 
-def get_access_token():
+def get_access_token(access_token):
     pass #still need to do this
 
 
@@ -31,4 +31,4 @@ def upload_video(access_token, dir, data):
     videoid = r3["id"]
     r4 = requests.post('https://api.dailymotion.com/video/{}'.format(videoid), headers=headers, data=data) # publishing video, 
     print("video posted, https://dailymotion.com/video/{}".format(videoid))
-upload_video(get_access_token(), dir)
+upload_video(get_access_token(access_token), dir)
