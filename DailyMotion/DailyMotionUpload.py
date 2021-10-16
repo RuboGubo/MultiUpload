@@ -14,11 +14,17 @@ data = { # does not currently work
 }
 
 def get_access_token(access_token):
-    pass #still need to do this
-
+    #https://developer.dailymotion.com/api/#retrieving-oauth-tokens
+    data = {
+        "grant_type":"password",
+        "client_id" : "9663d707aedbd03156ec",
+        "client_secret" : "b38a75f6eb0e5db1826d3506ad4ccbdc44f4c600",
+        "username" : "x2kppm3",
+        "password" : "abc==123",
+    }
+    r = requests.post("https://api.dailymotion.com/oauth/token", data=data) # {"error":"invalid_grant","error_description":"Invalid credentials."}
 
     return access_token
-    #https://developer.dailymotion.com/api/#retrieving-oauth-tokens
 def upload_video(access_token, dir, data):
     # https://developer.dailymotion.com/guides/upload/#:~:text=2.-,Get%20an%20upload%20URL,at%20%2Ffile%2Fupload%20
     headers = {'Authorization': "Bearer {}".format(access_token)}
@@ -31,4 +37,4 @@ def upload_video(access_token, dir, data):
     videoid = r3["id"]
     r4 = requests.post('https://api.dailymotion.com/video/{}'.format(videoid), headers=headers, data=data) # publishing video, 
     print("video posted, https://dailymotion.com/video/{}".format(videoid))
-upload_video(get_access_token(access_token), dir)
+upload_video(get_access_token(access_token), dir, data)
