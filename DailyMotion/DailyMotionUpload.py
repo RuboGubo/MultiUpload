@@ -1,40 +1,33 @@
 import requests, json
-# api explorer: https://developer.dailymotion.com/tools/
 
-access_token = 'ajVLUwtdBxRYBUQJHV5dRwYbAR1GXRFEGANURVRLT0MY' # currently have to manually get an access token
 dir = '/Users/finlayhoughton/Desktop/0001-0240.mkv'
-title = "test 1234"
-channel = 'yeah987654'
-data = { # does not currently work
+
+video_data = { # does not currently work
 'published': 'true',
-'title': title,
-'channel': channel,
+'title': 'test 1234',
+'channel': 'yeah987654',
 'tags': 'testtag1234',
 'is_created_for_kids': 'true'
 }
+access_token_data = {
+    "grant_type":"password",
+    "client_id" : "9663d707aedbd03156ec",
+    "client_secret" : "b38a75f6eb0e5db1826d3506ad4ccbdc44f4c600",
+    "username" : "dm_f84a87f1f6ed240f640a2ec724bf556c",
+    "password" : "abc==123",
+}
 
-def get_access_token(access_token):
+def get_access_token(data):
     #https://developer.dailymotion.com/api/#retrieving-oauth-tokens
-    data = {
-        "grant_type":"password",
-        "client_id" : "9663d707aedbd03156ec",
-        "client_secret" : "b38a75f6eb0e5db1826d3506ad4ccbdc44f4c600",
-        "username" : "x2kppm3",
-        "password" : "abc==123",
-    }
-    r = requests.post("https://api.dailymotion.com/oauth/token", data=data) # {"error":"invalid_grant","error_description":"Invalid credentials."}
-
-    return access_token
+    r = requests.post("https://api.dailymotion.com/oauth/token", data=data) 
+    r = json.dumps(r.text)
+    return r["access_token"]
 def upload_video(access_token, dir, data):
     # https://developer.dailymotion.com/guides/upload/#:~:text=2.-,Get%20an%20upload%20URL,at%20%2Ffile%2Fupload%20
     headers = {'Authorization': "Bearer {}".format(access_token)}
-    r1 = requests.get('https://api.dailymotion.com/file/upload', headers=headers) # getting an upload URL
-    r1 = json.loads(r1.text)
-    r2 = requests.post(r1["upload_url"], files={'file': (dir, open(dir, 'rb'))}) # uploading video
-    r2 = json.loads(r2.text)
-    r3 = requests.post('https://api.dailymotion.com/me/videos', headers=headers, data={'url': r2["url"]}) # creating video
-    r3 = json.loads(r3.text)
-    videoid = r3["id"]
-    r4 = requests.post('https://api.dailymotion.com/video/{}'.format(videoid), headers=headers, data=data) # publishing video, 
-    print("video posted, https://dailymotion.com/video/{}".format(videoid))
-upload_video(get_access_token(access_token), dir, data)
+    r1 = json.loads(requests.get('https://api.dailymotion.com/file/upload', headers=headers).text) # getting an upload URL
+    r2 = json.loads(requests.post(r1["upload_url"], files={'file': (dir, open(dir, 'rb'))}).text) # uploading video
+    r3 = json.loads(requests.post('https://api.dailymotion.com/me/videos', headers=headers, data={'url': r2["url"]}).text) # creating video
+    r4 = requests.post('https://api.dailymotion.com/video/{}'.format(r3["id"]), headers=headers, data=data) # publishing video, 
+    print("video posted, https://dailymotion.com/video/{}".format(r3["id"]))
+upload_video(get_access_token(access_token_data), dir, video_data)
