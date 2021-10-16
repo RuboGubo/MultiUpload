@@ -26,4 +26,3 @@ elif Service.upper() == 'DM':
     
     if 'DailyMotion' not in data['Platforms']:
         data['Platforms'].append('DailyMotion')
-    

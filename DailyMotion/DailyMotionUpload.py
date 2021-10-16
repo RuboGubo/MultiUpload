@@ -1,13 +1,7 @@
-<<<<<<< HEAD
-import requests, json
-"""
-dir = '/Users/finlayhoughton/Desktop/0001-0240.mkv'
-=======
 import requests
 import json
 
 dir = '0001-0240.mkv'
->>>>>>> 5341eb4fbe0843f2e9906ec953789eb57f99a2ba
 
 video_data = {  # does not currently work
     'published': 'true',
@@ -26,13 +20,8 @@ access_token_data = {
 }
 
 def get_access_token(data):
-<<<<<<< HEAD
-    #https://developer.dailymotion.com/api/#retrieving-oauth-tokens
-    r = requests.post("https://api.dailymotion.com/oauth/token", data=data) 
-=======
     # https://developer.dailymotion.com/api/#retrieving-oauth-tokens
     r = requests.post("https://api.dailymotion.com/oauth/token", data=data)
->>>>>>> 5341eb4fbe0843f2e9906ec953789eb57f99a2ba
     r = json.loads(r.text)
     return r["access_token"]
 
@@ -47,8 +36,7 @@ def upload_video(access_token, dir, data):
     print("video posted, https://dailymotion.com/video/{}".format(r3["id"]))
 
 
-upload_video(get_access_token(access_token_data), dir, video_data)
-"""
+#upload_video(get_access_token(access_token_data), dir, video_data)
 
 f = open(r'SignIn\UserPreferances.json', 'r')
 data = json.load(f)
