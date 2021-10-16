@@ -1,6 +1,5 @@
-import requests
-import json
-
+import requests, json
+"""
 dir = '/Users/finlayhoughton/Desktop/0001-0240.mkv'
 
 video_data = {  # does not currently work
@@ -19,25 +18,30 @@ access_token_data = {
     "scope": "manage_videos",
 }
 
-
 def get_access_token(data):
     #https://developer.dailymotion.com/api/#retrieving-oauth-tokens
     r = requests.post("https://api.dailymotion.com/oauth/token", data=data) 
     r = json.loads(r.text)
+    return r["access_token"]
 
 def upload_video(access_token, dir, data):
     # https://developer.dailymotion.com/guides/upload/#:~:text=2.-,Get%20an%20upload%20URL,at%20%2Ffile%2Fupload%20
     headers = {'Authorization': "Bearer {}".format(access_token)}
-    r1 = json.loads(requests.get('https://api.dailymotion.com/file/upload',
-                    headers=headers).text)  # getting an upload URL
+    r1 = json.loads(requests.get('https://api.dailymotion.com/file/upload', headers=headers).text)  # getting an upload URL
     print(r1)
-    r2 = json.loads(requests.post(r1["upload_url"], files={
-                    'file': (dir, open(dir, 'rb'))}).text)  # uploading video
-    r3 = json.loads(requests.post('https://api.dailymotion.com/me/videos',
-                    headers=headers, data={'url': r2["url"]}).text)  # creating video
-    r4 = requests.post('https://api.dailymotion.com/video/{}'.format(
-        r3["id"]), headers=headers, data=data)  # publishing video,
+    r2 = json.loads(requests.post(r1["upload_url"], files={'file': (dir, open(dir, 'rb'))}).text)  # uploading video
+    r3 = json.loads(requests.post('https://api.dailymotion.com/me/videos', headers=headers, data={'url': r2["url"]}).text)  # creating video
+    r4 = requests.post('https://api.dailymotion.com/video/{}'.format(r3["id"]), headers=headers, data=data)  # publishing video,
     print("video posted, https://dailymotion.com/video/{}".format(r3["id"]))
 
 
 upload_video(get_access_token(access_token_data), dir, video_data)
+"""
+
+f = open(r'SignIn\UserPreferances.json', 'r')
+data = json.load(f)
+f.close()
+data["Refresh_token_dailymotion"] = "cum"
+f = open(r'SignIn\UserPreferances.json', 'w')
+json.dump(data, f)
+f.close()
