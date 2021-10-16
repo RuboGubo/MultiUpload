@@ -1,4 +1,4 @@
 {
-    "Platforms": ["Youtube", "DailyMotion"]
+    "Platforms": ["Youtube", "DailyMotion"],
     "Refresh_token_dailymotion": ""
 }

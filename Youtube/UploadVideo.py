@@ -20,8 +20,7 @@ def UploadYoutubeVideo(title: str, description: Optional[str], tags: Optional[li
         },
         'status': {
             'privacySatus': 'private'
-        },
-        'notifySubscribers': False
+        }
     }
     
     MediaFile = MediaFileUpload(VideoDir)
