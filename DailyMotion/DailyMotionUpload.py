@@ -22,7 +22,7 @@ access_token_data = {
 def get_access_token(data):
     # https://developer.dailymotion.com/api/#retrieving-oauth-tokens
     r = requests.post("https://api.dailymotion.com/oauth/token", data=data)
-    r = json.dumps(r.text)
+    r = json.loads(r.text)
     return r["access_token"]
 
 
