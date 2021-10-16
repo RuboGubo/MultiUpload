@@ -1,8 +1,8 @@
 import json
 
-f = open(r'SignIn\UserPreferances.json')
-
+f = open(r'SignIn\UserPreferances.json', 'r')
 data = json.load(f)
+f.close()
 
 print('Suported Platforms:') 
 print('YouTube(YT)')

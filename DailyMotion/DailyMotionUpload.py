@@ -25,12 +25,19 @@ def get_access_token(data):
     r = json.loads(r.text)
     return r["access_token"]
 
+def GetUploadURL(headers):
+    UploadURLData = json.loads(requests.get('https://api.dailymotion.com/file/upload', headers=headers).text)
+    print(UploadURLData)
+    return UploadURLData["upload_url"]
+
+
 def upload_video(access_token, dir, data):
     # https://developer.dailymotion.com/guides/upload/#:~:text=2.-,Get%20an%20upload%20URL,at%20%2Ffile%2Fupload%20
     headers = {'Authorization': "Bearer {}".format(access_token)}
-    r1 = json.loads(requests.get('https://api.dailymotion.com/file/upload', headers=headers).text)  # getting an upload URL
-    print(r1)
-    r2 = json.loads(requests.post(r1["upload_url"], files={'file': (dir, open(dir, 'rb'))}).text)  # uploading video
+    
+    UploadURL = GetUploadURL(headers)
+    
+    r2 = json.loads(requests.post(UploadURL, files={'file': (dir, open(dir, 'rb'))}).text)  # uploading video
     r3 = json.loads(requests.post('https://api.dailymotion.com/me/videos', headers=headers, data={'url': r2["url"]}).text)  # creating video
     r4 = requests.post('https://api.dailymotion.com/video/{}'.format(r3["id"]), headers=headers, data=data)  # publishing video,
     print("video posted, https://dailymotion.com/video/{}".format(r3["id"]))
