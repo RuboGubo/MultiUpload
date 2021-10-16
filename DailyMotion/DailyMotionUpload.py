@@ -1,7 +1,7 @@
 import requests
 import json
 
-dir = '/Users/finlayhoughton/Desktop/0001-0240.mkv'
+dir = '0001-0240.mkv'
 
 video_data = {  # does not currently work
     'published': 'true',
