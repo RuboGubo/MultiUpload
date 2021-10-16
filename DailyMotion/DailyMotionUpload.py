@@ -20,7 +20,8 @@ access_token_data = {
 def get_access_token(data):
     #https://developer.dailymotion.com/api/#retrieving-oauth-tokens
     r = requests.post("https://api.dailymotion.com/oauth/token", data=data) 
-    r = json.dumps(r.text)
+    r = json.loads(r.text)
+    print(r)
     return r["access_token"]
 def upload_video(access_token, dir, data):
     # https://developer.dailymotion.com/guides/upload/#:~:text=2.-,Get%20an%20upload%20URL,at%20%2Ffile%2Fupload%20
