@@ -36,7 +36,7 @@ def upload_video(access_token, dir, data):
     print("video posted, https://dailymotion.com/video/{}".format(r3["id"]))
 
 
-#upload_video(get_access_token(access_token_data), dir, video_data)
+upload_video(get_access_token(access_token_data), dir, video_data)
 
 f = open(r'SignIn\UserPreferances.json', 'r')
 data = json.load(f)
