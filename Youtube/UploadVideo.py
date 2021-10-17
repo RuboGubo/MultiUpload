@@ -32,6 +32,6 @@ def UploadYoutubeVideo(title: str, description: Optional[str], tags: Optional[li
     ).execute()
 
     service.thumbnails().set(
-        videoId = 'MKwF8T8yaiA',#ResponceUpload.get('id'),
+        videoId = ResponceUpload.get('id'),
         media_body=MediaFileUpload(ThumbnailDir)
     ).execute()
