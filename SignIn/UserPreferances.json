@@ -1,15 +1,1 @@
-{
-    "Refresh_token_dailymotion": "a77272d05a307eec2e423f79e565ac1012023433",
-    "PlatfromSpecificDetails":{
-        "youtube": {
-            "SetUp": false,
-            "ChannelName": "",
-            "ChannelLogoDir": ""
-        },
-        "dailymotion": {
-            "SetUp": false,
-            "ChannelName": "",
-            "ChannelLogoDir": ""
-        }
-    }
-}
+{"Refresh_token_dailymotion": "a77272d05a307eec2e423f79e565ac1012023433", "PlatfromSpecificDetails": {"youtube": {"SetUp": false, "ChannelName": "", "ChannelLogoDir": ""}, "dailymotion": {"SetUp": false, "ChannelName": "", "ChannelLogoDir": ""}}}

@@ -1,10 +1,10 @@
 import requests, json
 
 dir = '0001-0240.mkv'
-title = "Cool_new_video!"
-channel = "yyyyyyy6"
-tags = "videos"
-is_created_for_kids = "true"  # "true" or "false"
+title = 'yeah2'
+channel = 'yyyyyyy6'
+tags = 'gaming,tea'
+is_created_for_kids = 'true'  # "true" or "false"
 
 
 def get_refresh_token():
@@ -22,49 +22,48 @@ def get_access_token(refresh_token):
         "refresh_token": refresh_token,
         "scope": "manage_videos",
     }
-    #https:/xw/developer.dailymotion.com/api/#retrieving-oauth-tokens
+    #https://developer.dailymotion.com/api/#retrieving-oauth-tokens
     access_token_response = json.loads(requests.post("https://api.dailymotion.com/oauth/token", data=access_token_data).text) # requesting access & refresh token
-    UserprefJson = open(r'SignIn/UserPreferances.json', 'r')
-    userpref = json.load(UserprefJson)
-    UserprefJson.close()
+    userprefJson = open(r'SignIn/UserPreferances.json', 'r')
+    userpref = json.load(userprefJson)
+    userprefJson.close()
     userpref["Refresh_token_dailymotion"] = access_token_response["refresh_token"] # saving refresh token in UserPreferances.json
-    UserprefJson = open(r'SignIn/UserPreferances.json', 'w')
-    json.dump(userpref, UserprefJson)
-    UserprefJson.close()
+    userprefJson = open(r'SignIn/UserPreferances.json', 'w')
+    json.dump(userpref, userprefJson)
+    userprefJson.close()
     return access_token_response["access_token"]
 def get_upload_url(headers):
     UploadURLData = json.loads(requests.get(
         'https://api.dailymotion.com/file/upload', headers=headers).text)
     return UploadURLData["upload_url"]
 
-
 def upload_video(UploadURL):
     URLData = json.loads(requests.post(
         UploadURL, files={'file': (dir, open(dir, 'rb'))}).text)
     return URLData["url"]
 
-
 def create_video(headers, url):
     VideoIdData = json.loads(requests.post('https://api.dailymotion.com/me/videos', headers=headers, data={'url': url}).text)
     if 'error' in VideoIdData:
-        print("Error {}, {} Video not uploaded".format(VideoIdData["error"]["code"], VideoIdData["error"]["message"]))
-        raise SystemExit
+        print("Error {}, {} Video not uploaded.".format(VideoIdData["error"]["code"], VideoIdData["error"]["message"]))
+        return None
     return VideoIdData["id"]
 def publish_video(headers, VideoID):
-    x = requests.post('https://api.dailymotion.com/video/{}?published=true&title={}&channel={}&tags={}&is_created_for_kids={}'.format(
-        VideoID, title, channel, tags, is_created_for_kids), headers=headers)  # publishing video,
-    print("video posted, https://dailymotion.com/video/{}".format(VideoID))
+    # video title, is created for kids, and tags work if i put them in the requests.post() manually 
+    # but not with '{}'.format(title), f'{tags}' or + is_created_for_kids +
+    publish_video_url = f'https://api.dailymotion.com/video/{VideoID}?published=true&title={title}&channel={channel}&tags={tags}&is_created_for_kids={is_created_for_kids}'
+    x = requests.post(publish_video_url, headers=headers)  # publishing video
+    print(f"Video posted, https://dailymotion.com/video/{VideoID}")
 
 
 def main():
     # https://developer.dailymotion.com/guides/upload/#:~:text=2.-,Get%20an%20upload%20URL,at%20%2Ffile%2Fupload%20
     refresh_token = get_refresh_token()
     access_token = get_access_token(refresh_token)
-    headers = {'Authorization': "Bearer {}".format(access_token)}
+    headers = {'Authorization': f"Bearer {access_token}"}
     UploadURL = get_upload_url(headers)
-    URL = upload_video(UploadURL)
-    VideoID = create_video(headers, URL)
-    publish_video(headers, VideoID)
-
-
+    url = upload_video(UploadURL)
+    VideoID = create_video(headers, url)
+    if VideoID != None:
+        publish_video(headers, VideoID)
 main()
