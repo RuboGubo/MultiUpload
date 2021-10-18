@@ -46,10 +46,10 @@ def create_video(headers, url):
     VideoIdData = json.loads(requests.post('https://api.dailymotion.com/me/videos', headers=headers, data={'url': url}).text)
     if 'error' in VideoIdData:
         print("Error {}, {} Video not uploaded.".format(VideoIdData["error"]["code"], VideoIdData["error"]["message"]))
-        return None
+        return
     return VideoIdData["id"]
 def publish_video(headers, VideoID):
-    # video title, is created for kids, and tags work if i put them in the requests.post() manually 
+    # video title, created for kids, and tags work if i put them in the requests.post() manually 
     # but not with '{}'.format(title), f'{tags}' or + is_created_for_kids +
     publish_video_url = f'https://api.dailymotion.com/video/{VideoID}?published=true&title={title}&channel={channel}&tags={tags}&is_created_for_kids={is_created_for_kids}'
     x = requests.post(publish_video_url, headers=headers)  # publishing video
