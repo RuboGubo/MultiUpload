@@ -2,7 +2,7 @@ import requests, json
 
 dir = '0001-0240.mkv'
 title = 'yeah2'
-channel = 'yyyyyyy6'
+channel = 'videogames'
 tags = 'gaming,tea'
 is_created_for_kids = 'true'  # "true" or "false"
 
@@ -33,25 +33,25 @@ def get_access_token(refresh_token):
     userprefJson.close()
     return access_token_response["access_token"]
 def get_upload_url(headers):
-    UploadURLData = json.loads(requests.get(
-        'https://api.dailymotion.com/file/upload', headers=headers).text)
+    UploadURLData = json.loads(requests.get('https://api.dailymotion.com/file/upload', headers=headers).text)
     return UploadURLData["upload_url"]
-
 def upload_video(UploadURL):
-    URLData = json.loads(requests.post(
-        UploadURL, files={'file': (dir, open(dir, 'rb'))}).text)
+    URLData = json.loads(requests.post(UploadURL, files={'file': (dir, open(dir, 'rb'))}).text)
     return URLData["url"]
 
 def create_video(headers, url):
     VideoIdData = json.loads(requests.post('https://api.dailymotion.com/me/videos', headers=headers, data={'url': url}).text)
     if 'error' in VideoIdData:
-        print("Error {}, {} Video not uploaded.".format(VideoIdData["error"]["code"], VideoIdData["error"]["message"]))
+        error_code = VideoIdData["error"]["code"]
+        error_messsage = VideoIdData["error"]["message"]
+        print(f"Error {error_code}, {error_messsage} Video not uploaded.")
         return
     return VideoIdData["id"]
 def publish_video(headers, VideoID):
     # video title, created for kids, and tags work if i put them in the requests.post() manually 
     # but not with '{}'.format(title), f'{tags}' or + is_created_for_kids +
     publish_video_url = f'https://api.dailymotion.com/video/{VideoID}?published=true&title={title}&channel={channel}&tags={tags}&is_created_for_kids={is_created_for_kids}'
+    print(publish_video_url)
     x = requests.post(publish_video_url, headers=headers)  # publishing video
     print(f"Video posted, https://dailymotion.com/video/{VideoID}")
 
