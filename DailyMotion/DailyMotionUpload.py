@@ -3,6 +3,10 @@ import requests, json
 dir = '0001-0240.mkv'
 title = 'yeah2'
 channel = 'videogames'
+# channel actually means category, the diffrent categories are:
+# "animals", "auto" (cars), "people" (celebratories), "fun" (comedy/entertainment), "creation" (creative, artsy stuff), "school", "videogames" (gaming)
+# "kids" (kids videos, not videos about kids), "lifestyle" (how-to and DIY), "shortfilms" (shows, movies, and trailers), "music", "news", "sport"
+# "tech", "travel", "tv" (tv shows, interviews, and documenteries), "webcam" (rants, opinions)
 tags = 'gaming,tea'
 is_created_for_kids = 'true'  # "true" or "false"
 
