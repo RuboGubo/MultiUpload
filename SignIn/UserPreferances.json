@@ -1,10 +1,10 @@
 {
     "Refresh_token_dailymotion": "a77272d05a307eec2e423f79e565ac1012023433",
-    "PlatfromSpecificDetails":{
+    "PlatfromSpecificDetails": {
         "youtube": {
-            "SetUp": false,
-            "ChannelName": "",
-            "ChannelLogoDir": ""
+            "SetUp": true,
+            "ChannelName": "ben r",
+            "ChannelLogoDir": "Youtube\\UserData\\ben r.png"
         },
         "dailymotion": {
             "SetUp": false,
