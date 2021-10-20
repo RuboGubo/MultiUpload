@@ -2,7 +2,7 @@ import requests, json
 
 dir = '0001-0240.mkv'
 title = 'yeah2'
-channel = 'videogames'
+channel = 'auto'
 # channel actually means category, the diffrent categories are:
 # "animals", "auto" (cars), "people" (celebratories), "fun" (comedy/entertainment), "creation" (creative, artsy stuff), "school", "videogames" (gaming)
 # "kids" (kids videos, not videos about kids), "lifestyle" (how-to and DIY), "shortfilms" (shows, movies, and trailers), "music", "news", "sport"
@@ -52,10 +52,7 @@ def create_video(headers, url):
         return
     return VideoIdData["id"]
 def publish_video(headers, VideoID):
-    # video title, created for kids, and tags work if i put them in the requests.post() manually 
-    # but not with '{}'.format(title), f'{tags}' or + is_created_for_kids +
     publish_video_url = f'https://api.dailymotion.com/video/{VideoID}?published=true&title={title}&channel={channel}&tags={tags}&is_created_for_kids={is_created_for_kids}'
-    print(publish_video_url)
     x = requests.post(publish_video_url, headers=headers)  # publishing video
     print(f"Video posted, https://dailymotion.com/video/{VideoID}")
 
