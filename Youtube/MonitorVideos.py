@@ -1,8 +1,9 @@
+from Youtube.Google import Create_Service
+import requests
+import shutil
 from pprint import pprint
-from Google import Create_Service
 
-
-class Channel():  # Get all relivant data about a channel
+class YoutubeChannel():  # Get all relivant data about a channel
     CLIENT_SECRET_FILE = 'Youtube\client_secret.json'
     API_NAME = 'youtube'
     API_VERSION = 'v3'
@@ -15,6 +16,17 @@ class Channel():  # Get all relivant data about a channel
             self.ChannelData = self.getYoutubeChannel()
             self.CHANNELID = self.ChannelData['items'][0]['id']
             self.CHANNELTITLE = self.ChannelData['items'][0]['snippet']['localized']['title']
+            
+    def getChannelLogo(self):
+        r = requests.get(self.ChannelData['items'][0]['snippet']['thumbnails']['high']['url'], stream=True)
+        ChannelLogoDir = r'Youtube\UserData\{title}.png'.format(title = self.CHANNELTITLE)
+        
+        if r.status_code == 200:
+            with open(ChannelLogoDir, 'wb') as f:
+                r.raw.decode_content = True
+                shutil.copyfileobj(r.raw, f) 
+                
+        return ChannelLogoDir
 
     def convertVideoIDsToString(self, ids: list):
         string: str = ''
@@ -41,7 +53,15 @@ class Channel():  # Get all relivant data about a channel
 
         return responce['items']
 
+    def getAllVideoIDs(self):
+        part_string = 'snippet,id'
+        
+        responce = self.youtube.search().list(
+            part=part_string,
+            maxResults=20,
+            channelId=self.CHANNELID
+        ).execute()
+        
+        pprint(responce)
 
-if __name__ == '__main__':
-    Benr = Channel(True)
-    pprint(Benr.ChannelData)
+UserChannel = YoutubeChannel(True)
