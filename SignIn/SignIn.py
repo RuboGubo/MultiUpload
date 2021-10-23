@@ -1,42 +1,18 @@
-import json
-
+import Promps
 from Youtube.MonitorVideos import YoutubeChannel
 
-with open(r'SignIn/UserPreferances.json', 'r') as f:
-    UserPrefferances = json.load(f)
-    f.close()
-
-
-def ConfigureYoutube():
-    UserChannel = YoutubeChannel(True)
-    UserPrefferances['PlatfromSpecificDetails']['youtube']['ChannelLogoDir'] = UserChannel.getChannelLogo()
-    UserPrefferances['PlatfromSpecificDetails']['youtube']['ChannelName'] = UserChannel.CHANNELTITLE
-    UserPrefferances['PlatfromSpecificDetails']['youtube']['SetUp'] = True
-    
-
-def ConfigureDailyMotion():
-    UserPrefferances['PlatfromSpecificDetails']['dailymotion']['SetUp'] = True
-    
-print('Please choose unconfigured platform')
+print('Please choose platform to configure')
 print('YouTube(YT)')
-print('PeerTube(PT)')
 print('DailyMotion(DM)')
 
 Service = input(':')
 
-if Service.upper() == 'YT' and not UserPrefferances['PlatfromSpecificDetails']['youtube']['SetUp']:
-    ConfigureYoutube()
+if Service.upper() == 'YT':
+    YoutubeChannel() # Creates Youtube Monitor Class, which will also create login file.
     
-elif Service.upper() == 'PT':
-    print('PeerTube Setup Disabled')
+elif Service.upper() == 'DM':
+    app = Promps.LoginUsernamePasswordPrompt('dailymotion') # Creates a prompt and sends of the username and password via event handelers
+    app.mainloop()
     
-elif Service.upper() == 'DM' and not UserPrefferances['PlatfromSpecificDetails']['dailymotion']['SetUp']:
-    ConfigureDailyMotion()
-
 else:
-    print('Service already exists or wrong code used')
-        
-        
-with open(r'SignIn/UserPreferances.json', 'w') as f:
-    json.dump(UserPrefferances, f)
-    f.close()
+    print('Platform does not exist.')

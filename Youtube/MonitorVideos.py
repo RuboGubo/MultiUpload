@@ -1,6 +1,7 @@
 from Youtube.Google import Create_Service
 import requests
 import shutil
+import PrefferanceManager
 from pprint import pprint
 
 class YoutubeChannel():  # Get all relivant data about a channel
@@ -9,14 +10,22 @@ class YoutubeChannel():  # Get all relivant data about a channel
     API_VERSION = 'v3'
     SCOPES = ['https://www.googleapis.com/auth/youtube.readonly']
 
-    def __init__(self, own: bool) -> None:
+    def __init__(self) -> None:
         self.youtube = Create_Service(
             self.CLIENT_SECRET_FILE, self.API_NAME, self.API_VERSION, self.SCOPES)
-        if own:
-            self.ChannelData = self.getYoutubeChannel()
-            self.CHANNELID = self.ChannelData['items'][0]['id']
-            self.CHANNELTITLE = self.ChannelData['items'][0]['snippet']['localized']['title']
+        
+        self.ChannelData = self.getYoutubeChannel()
+        self.CHANNELID = self.ChannelData['items'][0]['id']
+        self.CHANNELTITLE = self.ChannelData['items'][0]['snippet']['localized']['title']
+        
+        self.Prefferances = PrefferanceManager.LoadPrefferances()
             
+    def UpdatePrefferances(self):
+        self.Prefferances['PlatfromSpecificDetails']['youtube']['ChannelLogoDir'] = self.getChannelLogo()
+        self.Prefferances['PlatfromSpecificDetails']['youtube']['ChannelName'] = self.CHANNELTITLE
+        self.Prefferances['PlatfromSpecificDetails']['youtube']['SetUp'] = True
+        PrefferanceManager.SavePrefferances(self.Prefferances)
+    
     def getChannelLogo(self):
         r = requests.get(self.ChannelData['items'][0]['snippet']['thumbnails']['high']['url'], stream=True)
         ChannelLogoDir = r'Youtube\UserData\{title}.png'.format(title = self.CHANNELTITLE)
@@ -63,5 +72,3 @@ class YoutubeChannel():  # Get all relivant data about a channel
         ).execute()
         
         pprint(responce)
-
-UserChannel = YoutubeChannel(True)

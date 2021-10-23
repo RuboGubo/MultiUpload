@@ -6,7 +6,6 @@ from tkinter import PhotoImage, ttk
 root = tk.Tk()
 
 
-
 with open(r'SignIn/UserPreferances.json', 'r') as f:
     UserPrefferances = json.load(f)
     f.close()
@@ -38,12 +37,15 @@ def log(event):
 def DisplayChannel(lable, text):
     lable['text'] = text
     lable['font'] = ("Helvetica", 11)
+    lable['justify'] = tk.LEFT
     lable.pack()
 
 for platform in UserPrefferances['PlatfromSpecificDetails']:
     if UserPrefferances['PlatfromSpecificDetails'][platform]['SetUp']:
+        
         ChannelNametmp = UserPrefferances['PlatfromSpecificDetails'][platform]['ChannelName']
         DisplayChannel(ttk.Label(root), f'{platform.upper()} Channel Name: {ChannelNametmp}')
+        
         root.title(f'MultiUpload - {ChannelNametmp}')
 
 photo = tk.PhotoImage(file='MultiUpload.png')
